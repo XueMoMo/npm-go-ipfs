@@ -194,9 +194,9 @@ async function link ({ depBin, version }) {
 
 module.exports = async (...args) => {
   args = cleanArguments(...args)
-
   return link({
     ...args,
     depBin: await download(args)
   })
+
 }
