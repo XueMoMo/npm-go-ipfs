@@ -136,6 +136,10 @@ async function getDownloadURL (version, platform, arch, distUrl) {
 }
 
 async function download ({ version, platform, arch, installPath, distUrl }) {
+  if(fs.statSync(path.join(installPath, 'go-ipfs')).isDirectory){
+    console.info('use unpack go-ipfs')
+    return path.join(installPath, 'go-ipfs', `ipfs${platform === 'windows' ? '.exe' : ''}`)
+  }
   const url = await getDownloadURL(version, platform, arch, distUrl)
   const data = await cachingFetchAndVerify(url)
 
@@ -182,7 +186,7 @@ async function link ({ depBin, version }) {
   var actualVersion = `v${m[1]}`
 
   if (actualVersion !== version) {
-    throw new Error(`version mismatch: expected ${version} got ${actualVersion}`)
+    console.warn('version', actualVersion, version)
   }
 
   return localBin
